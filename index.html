@@ -8,22 +8,26 @@
     <title>AlıştırMAYA - Maya Okulları</title>
     <style>
         *{box-sizing:border-box;}
-        body{font-family:'Segoe UI',sans-serif; background:#eef2f5; display:flex; justify-content:center; align-items:center; min-height:100vh; margin:0; padding:20px;}
-        .container{background:white; border-radius:32px; padding:1.8rem; width:750px; max-width:100%; max-height:95vh; overflow-y:auto; box-shadow:0 20px 30px rgba(0,0,0,0.05);}
-        /* LOGO SABİT - HEP GÖRÜNÜR */
+        body{font-family:'Segoe UI',sans-serif; background:#eef2f5; display:flex; flex-direction:column; justify-content:flex-start; align-items:center; min-height:100vh; margin:0; padding:20px;}
+        /* LOGO KALICI - APPCONTAINER DIŞINDA */
         .maya-logo{
-            text-align:center; 
-            margin-bottom:20px; 
-            padding-bottom:10px; 
+            text-align:center;
+            margin-bottom:0;
+            padding:10px 20px 12px;
             border-bottom:2px solid #e67e22;
+            background:white;
+            width:750px;
+            max-width:100%;
+            border-radius:32px 32px 0 0;
             position:sticky;
             top:0;
-            background:white;
-            z-index:10;
+            z-index:100;
+            box-shadow:0 4px 10px rgba(0,0,0,0.05);
         }
         .maya-logo img{width:80px; height:80px; border-radius:50%; background:#e67e22; padding:8px;}
         .maya-logo h2{color:#e67e22; margin:5px 0 0 0; font-size:1.5rem;}
-        .maya-logo p{font-size:0.8rem; color:#7f8c8d; margin-top:-5px;}
+        .maya-logo p{font-size:0.8rem; color:#7f8c8d; margin-top:-5px; margin-bottom:0;}
+        .container{background:white; border-radius:0 0 32px 32px; padding:1.8rem; width:750px; max-width:100%; max-height:80vh; overflow-y:auto; box-shadow:0 20px 30px rgba(0,0,0,0.05);}
         .hidden{display:none !important;}
         .btn{display:block; width:100%; padding:14px; margin:10px 0; border-radius:60px; font-weight:bold; font-size:1rem; border:none; cursor:pointer; text-align:center;}
         .btn-teacher{background:#2c6e9e; color:white;}
@@ -51,163 +55,165 @@
     </style>
 </head>
 <body>
-<div class="container" id="appContainer">
-    <!-- MAYA OKULLARI LOGOSU - SABİT, HEP GÖRÜNÜR -->
+
+    <!-- MAYA OKULLARI LOGOSU - KALICI, HEP GÖRÜNÜR -->
     <div class="maya-logo">
-        <img src="https://via.placeholder.com/80x80?text=Maya" alt="Maya Okulları">
-        <h2>🏫 Maya Okulları</h2>
-        <p>AlıştırMAYA Eğitim Platformu</p>
+        <h2>🏫 AlıştırMAYA</h2>
+        <p>Maya Okulları Eğitim Platformu</p>
     </div>
 
-    <!-- ANA MENÜ -->
-    <div id="mainMenu">
-        <button class="btn btn-teacher" onclick="navigateTo('teacherLoginPage')">👩‍🏫 Öğretmen Girişi</button>
-        <button class="btn btn-student" onclick="navigateTo('studentLoginPage')">🧑‍🎓 Öğrenci Girişi</button>
-        <button class="btn btn-admin" onclick="navigateTo('adminLoginPage')">🔐 Yetkili Paneli</button>
-        <button class="btn btn-warning" onclick="navigateTo('studentRegisterPage')">📝 Kaydol</button>
-    </div>
+    <!-- SAYFA İÇERİKLERİ -->
+    <div class="container" id="appContainer">
 
-    <!-- ÖĞRETMEN GİRİŞ -->
-    <div id="teacherLoginPage" class="hidden">
-        <h2>Öğretmen Girişi</h2>
-        <input type="text" id="teacherName" placeholder="Ad Soyad">
-        <input type="password" id="teacherPass" placeholder="Şifre">
-        <button class="btn btn-teacher" onclick="teacherLogin()">Giriş Yap</button>
-        <button class="btn btn-warning" onclick="navigateTo('teacherRegisterPage')">Kaydol (Yeni Öğretmen)</button>
-        <button class="btn btn-back" onclick="navigateTo('mainMenu')">← Ana Menü</button>
-    </div>
-
-    <!-- ÖĞRETMEN KAYIT -->
-    <div id="teacherRegisterPage" class="hidden">
-        <h2>Öğretmen Kaydı</h2>
-        <input type="text" id="newTeacherName" placeholder="Ad Soyad">
-        <input type="password" id="newTeacherPass" placeholder="Şifre">
-        <input type="password" id="newTeacherPass2" placeholder="Şifre Tekrar">
-        <button class="btn btn-teacher" onclick="registerTeacher()">Kaydol (Onay Bekliyor)</button>
-        <button class="btn btn-back" onclick="navigateTo('teacherLoginPage')">← Geri</button>
-    </div>
-
-    <!-- ÖĞRETMEN PANELİ -->
-    <div id="teacherDashboard" class="hidden">
-        <h2 id="teacherWelcomeText">Hoş Geldiniz</h2>
-        <div class="card"><b>📢 Duyuru Yayınla</b><textarea id="teacherAnnounce" rows="2"></textarea><button class="btn btn-teacher" onclick="sendAnnounce()">Yayınla</button></div>
-        <div class="card"><b>🔐 Şifre Değiştir</b><input type="password" id="oldPassT" placeholder="Eski Şifre"><input type="password" id="newPassT" placeholder="Yeni Şifre"><button class="btn btn-warning" onclick="changeTeacherPass()">Güncelle</button></div>
-        <button class="btn btn-warning" onclick="openTeacherChat()">👥 Öğretmenler Odası</button>
-        <button class="btn btn-logout" onclick="logoutTeacher()">Çıkış Yap</button>
-    </div>
-
-    <!-- ÖĞRENCİ GİRİŞ -->
-    <div id="studentLoginPage" class="hidden">
-        <h2>Öğrenci Girişi</h2>
-        <input type="text" id="studentName" placeholder="Ad Soyad">
-        <select id="studentClass">
-            <option value="5A">5A</option><option value="5B">5B</option>
-            <option value="6A">6A</option><option value="6B">6B</option><option value="6C">6C</option><option value="6D">6D</option>
-            <option value="7A">7A</option><option value="7B">7B</option>
-            <option value="8A">8A</option><option value="8B">8B</option>
-        </select>
-        <input type="password" id="studentPass" placeholder="Şifre">
-        <button class="btn btn-student" onclick="studentLogin()">Giriş Yap</button>
-        <button class="btn btn-back" onclick="navigateTo('mainMenu')">← Ana Menü</button>
-    </div>
-
-    <!-- ÖĞRENCİ PANELİ -->
-    <div id="studentDashboard" class="hidden">
-        <h2 id="studentWel">Merhaba!</h2>
-        <div id="studentAnnounceArea" class="card hidden"><b>DUYURU:</b> <span id="studentAnnounceText"></span></div>
-        
-        <div class="sohbet-butonlari">
-            <button class="btn btn-student" onclick="openGeneralChat()">🌍 Genel Sohbet</button>
-            <button class="btn btn-warning" onclick="openClassChat()">🏫 Sınıf Sohbeti</button>
+        <!-- ANA MENÜ -->
+        <div id="mainMenu">
+            <button class="btn btn-teacher" onclick="navigateTo('teacherLoginPage')">👩‍🏫 Öğretmen Girişi</button>
+            <button class="btn btn-student" onclick="navigateTo('studentLoginPage')">🧑‍🎓 Öğrenci Girişi</button>
+            <button class="btn btn-admin" onclick="navigateTo('adminLoginPage')">🔐 Yetkili Paneli</button>
+            <button class="btn btn-warning" onclick="navigateTo('studentRegisterPage')">📝 Kaydol</button>
         </div>
-        
-        <div class="class-bar">
-            <div class="class-btn" data-class="5" onclick="selectClass(5)">5. Sınıf</div>
-            <div class="class-btn" data-class="6" onclick="selectClass(6)">6. Sınıf</div>
-            <div class="class-btn" data-class="7" onclick="selectClass(7)">7. Sınıf</div>
-            <div class="class-btn" data-class="8" onclick="selectClass(8)">8. Sınıf</div>
+
+        <!-- ÖĞRETMEN GİRİŞ -->
+        <div id="teacherLoginPage" class="hidden">
+            <h2>Öğretmen Girişi</h2>
+            <input type="text" id="teacherName" placeholder="Ad Soyad">
+            <input type="password" id="teacherPass" placeholder="Şifre">
+            <button class="btn btn-teacher" onclick="teacherLogin()">Giriş Yap</button>
+            <button class="btn btn-warning" onclick="navigateTo('teacherRegisterPage')">Kaydol (Yeni Öğretmen)</button>
+            <button class="btn btn-back" onclick="navigateTo('mainMenu')">← Ana Menü</button>
         </div>
-        <div class="subject-bar">
-            <div class="subject-btn" data-sub="matematik" onclick="selectSubject('matematik')">📐 Matematik</div>
-            <div class="subject-btn" data-sub="turkce" onclick="selectSubject('turkce')">📖 Türkçe</div>
-            <div class="subject-btn" data-sub="fen" onclick="selectSubject('fen')">🔬 Fen Bilimleri</div>
-            <div class="subject-btn" data-sub="sosyal" onclick="selectSubject('sosyal')">🌍 Sosyal Bilgiler</div>
+
+        <!-- ÖĞRETMEN KAYIT -->
+        <div id="teacherRegisterPage" class="hidden">
+            <h2>Öğretmen Kaydı</h2>
+            <input type="text" id="newTeacherName" placeholder="Ad Soyad">
+            <input type="password" id="newTeacherPass" placeholder="Şifre">
+            <input type="password" id="newTeacherPass2" placeholder="Şifre Tekrar">
+            <button class="btn btn-teacher" onclick="registerTeacher()">Kaydol (Onay Bekliyor)</button>
+            <button class="btn btn-back" onclick="navigateTo('teacherLoginPage')">← Geri</button>
         </div>
-        <div id="lessonsContainer"></div>
-        <button class="btn btn-student" onclick="alert('Futbol oyunu yakında eklenecek')">⚽ Futbol Penaltı</button>
-        <button class="btn btn-admin" onclick="openSupportPage()">🛠️ Destek</button>
-        <button class="btn btn-logout" onclick="logoutStudent()">Çıkış Yap</button>
-    </div>
 
-    <!-- ÖĞRETMENLER ODASI (SADECE ÖĞRETMENLER) -->
-    <div id="teacherChatPage" class="hidden">
-        <h3>👥 Öğretmenler Odası</h3>
-        <div id="teacherChatBox" style="height:300px; overflow:auto; background:#f1f5f9; border-radius:20px; padding:10px;"></div>
-        <input type="text" id="teacherChatInput" placeholder="Mesaj..."><button class="btn btn-teacher" onclick="sendTeacherChatMsg()">Gönder</button>
-        <button class="btn btn-back" onclick="navigateTo('teacherDashboard')">← Dön</button>
-    </div>
+        <!-- ÖĞRETMEN PANELİ -->
+        <div id="teacherDashboard" class="hidden">
+            <h2 id="teacherWelcomeText">Hoş Geldiniz</h2>
+            <div class="card"><b>📢 Duyuru Yayınla</b><textarea id="teacherAnnounce" rows="2"></textarea><button class="btn btn-teacher" onclick="sendAnnounce()">Yayınla</button></div>
+            <div class="card"><b>🔐 Şifre Değiştir</b><input type="password" id="oldPassT" placeholder="Eski Şifre"><input type="password" id="newPassT" placeholder="Yeni Şifre"><button class="btn btn-warning" onclick="changeTeacherPass()">Güncelle</button></div>
+            <button class="btn btn-warning" onclick="openTeacherChat()">👥 Öğretmenler Odası</button>
+            <button class="btn btn-logout" onclick="logoutTeacher()">Çıkış Yap</button>
+        </div>
 
-    <!-- GENEL SOHBET -->
-    <div id="generalChatPage" class="hidden">
-        <h3>🌍 Genel Sohbet (Tüm Okul)</h3>
-        <div id="generalChatBox" style="height:300px; overflow:auto; background:#f1f5f9; border-radius:20px; padding:10px;"></div>
-        <input type="text" id="generalChatInput" placeholder="Mesaj..."><button class="btn btn-student" onclick="sendGeneralChatMsg()">Gönder</button>
-        <button class="btn btn-back" onclick="navigateTo('studentDashboard')">← Dön</button>
-    </div>
+        <!-- ÖĞRENCİ GİRİŞ -->
+        <div id="studentLoginPage" class="hidden">
+            <h2>Öğrenci Girişi</h2>
+            <input type="text" id="studentName" placeholder="Ad Soyad">
+            <select id="studentClass">
+                <option value="5A">5A</option><option value="5B">5B</option>
+                <option value="6A">6A</option><option value="6B">6B</option><option value="6C">6C</option><option value="6D">6D</option>
+                <option value="7A">7A</option><option value="7B">7B</option>
+                <option value="8A">8A</option><option value="8B">8B</option>
+            </select>
+            <input type="password" id="studentPass" placeholder="Şifre">
+            <button class="btn btn-student" onclick="studentLogin()">Giriş Yap</button>
+            <button class="btn btn-back" onclick="navigateTo('mainMenu')">← Ana Menü</button>
+        </div>
 
-    <!-- SINIF SOHBET -->
-    <div id="classChatPage" class="hidden">
-        <h3>🏫 Sınıf Sohbeti - <span id="classNameDisplay"></span></h3>
-        <div id="classChatBox" style="height:300px; overflow:auto; background:#f1f5f9; border-radius:20px; padding:10px;"></div>
-        <input type="text" id="classChatInput" placeholder="Mesaj..."><button class="btn btn-warning" onclick="sendClassChatMsg()">Gönder</button>
-        <button class="btn btn-back" onclick="navigateTo('studentDashboard')">← Dön</button>
-    </div>
+        <!-- ÖĞRENCİ PANELİ -->
+        <div id="studentDashboard" class="hidden">
+            <h2 id="studentWel">Merhaba!</h2>
+            <div id="studentAnnounceArea" class="card hidden"><b>DUYURU:</b> <span id="studentAnnounceText"></span></div>
+            
+            <div class="sohbet-butonlari">
+                <button class="btn btn-student" onclick="openGeneralChat()">🌍 Genel Sohbet</button>
+                <button class="btn btn-warning" onclick="openClassChat()">🏫 Sınıf Sohbeti</button>
+            </div>
+            
+            <div class="class-bar">
+                <div class="class-btn" data-class="5" onclick="selectClass(5)">5. Sınıf</div>
+                <div class="class-btn" data-class="6" onclick="selectClass(6)">6. Sınıf</div>
+                <div class="class-btn" data-class="7" onclick="selectClass(7)">7. Sınıf</div>
+                <div class="class-btn" data-class="8" onclick="selectClass(8)">8. Sınıf</div>
+            </div>
+            <div class="subject-bar">
+                <div class="subject-btn" data-sub="matematik" onclick="selectSubject('matematik')">📐 Matematik</div>
+                <div class="subject-btn" data-sub="turkce" onclick="selectSubject('turkce')">📖 Türkçe</div>
+                <div class="subject-btn" data-sub="fen" onclick="selectSubject('fen')">🔬 Fen Bilimleri</div>
+                <div class="subject-btn" data-sub="sosyal" onclick="selectSubject('sosyal')">🌍 Sosyal Bilgiler</div>
+            </div>
+            <div id="lessonsContainer"></div>
+            <button class="btn btn-student" onclick="alert('Futbol oyunu yakında eklenecek')">⚽ Futbol Penaltı</button>
+            <button class="btn btn-admin" onclick="openSupportPage()">🛠️ Destek</button>
+            <button class="btn btn-logout" onclick="logoutStudent()">Çıkış Yap</button>
+        </div>
 
-    <!-- YETKİLİ GİRİŞ -->
-    <div id="adminLoginPage" class="hidden">
-        <h2>Yetkili Paneli</h2>
-        <input type="password" id="adminPwd" placeholder="Admin Şifresi">
-        <button class="btn btn-admin" onclick="adminLogin()">Sisteme Gir</button>
-        <button class="btn btn-back" onclick="navigateTo('mainMenu')">← Geri</button>
-    </div>
+        <!-- ÖĞRETMENLER ODASI (SADECE ÖĞRETMENLER) -->
+        <div id="teacherChatPage" class="hidden">
+            <h3>👥 Öğretmenler Odası</h3>
+            <div id="teacherChatBox" style="height:300px; overflow:auto; background:#f1f5f9; border-radius:20px; padding:10px;"></div>
+            <input type="text" id="teacherChatInput" placeholder="Mesaj..."><button class="btn btn-teacher" onclick="sendTeacherChatMsg()">Gönder</button>
+            <button class="btn btn-back" onclick="navigateTo('teacherDashboard')">← Dön</button>
+        </div>
 
-    <!-- YETKİLİ PANELİ (Öğretmenler Odası YOK) -->
-    <div id="adminPanel" class="hidden">
-        <h2>Sistem Yönetimi</h2>
-        <div class="card"><b>📢 Duyuru</b><div id="adminAnnounceShow"></div><button class="small-btn" onclick="deleteAnnounce()">Duyuruyu Kaldır</button></div>
-        <div class="card"><b>⏳ Bekleyen Öğretmenler</b><div id="pendingTeachersList"></div></div>
-        <div class="card"><b>✅ Onaylı Öğretmenler</b><div id="approvedTeachersList"></div></div>
-        <div class="card"><b>👥 Bekleyen Öğrenciler</b><div id="pendingStudentsList"></div></div>
-        <div class="card"><b>✅ Onaylı Öğrenciler</b><div id="approvedStudentsList"></div></div>
-        <div class="card"><b>🌍 Genel Sohbet</b><button class="btn-danger" style="width:100%; margin-bottom:10px;" onclick="deleteAllMessages('genel_sohbet')">🗑️ Genel Sohbeti Sil</button><div id="adminGeneralChat" style="max-height:200px; overflow:auto;"></div></div>
-        <div class="card"><b>🏫 Sınıf Sohbetleri</b><div id="adminClassChats"></div></div>
-        <div class="card"><b>📩 Destek Talepleri</b><div id="supportTicketsList"></div></div>
-        <button class="btn btn-logout" onclick="logoutAdmin()">Çıkış</button>
-    </div>
+        <!-- GENEL SOHBET -->
+        <div id="generalChatPage" class="hidden">
+            <h3>🌍 Genel Sohbet (Tüm Okul)</h3>
+            <div id="generalChatBox" style="height:300px; overflow:auto; background:#f1f5f9; border-radius:20px; padding:10px;"></div>
+            <input type="text" id="generalChatInput" placeholder="Mesaj..."><button class="btn btn-student" onclick="sendGeneralChatMsg()">Gönder</button>
+            <button class="btn btn-back" onclick="navigateTo('studentDashboard')">← Dön</button>
+        </div>
 
-    <!-- ÖĞRENCİ KAYIT -->
-    <div id="studentRegisterPage" class="hidden">
-        <h2>Öğrenci Kaydı</h2>
-        <input type="text" id="stdRegName" placeholder="Ad Soyad">
-        <select id="stdRegClass">
-            <option value="5A">5A</option><option value="5B">5B</option>
-            <option value="6A">6A</option><option value="6B">6B</option><option value="6C">6C</option><option value="6D">6D</option>
-            <option value="7A">7A</option><option value="7B">7B</option>
-            <option value="8A">8A</option><option value="8B">8B</option>
-        </select>
-        <input type="password" id="stdRegPass" placeholder="Şifre">
-        <button class="btn btn-student" onclick="studentRegister()">Onay İsteği Gönder</button>
-        <button class="btn btn-back" onclick="navigateTo('mainMenu')">← Geri</button>
-    </div>
+        <!-- SINIF SOHBET -->
+        <div id="classChatPage" class="hidden">
+            <h3>🏫 Sınıf Sohbeti - <span id="classNameDisplay"></span></h3>
+            <div id="classChatBox" style="height:300px; overflow:auto; background:#f1f5f9; border-radius:20px; padding:10px;"></div>
+            <input type="text" id="classChatInput" placeholder="Mesaj..."><button class="btn btn-warning" onclick="sendClassChatMsg()">Gönder</button>
+            <button class="btn btn-back" onclick="navigateTo('studentDashboard')">← Dön</button>
+        </div>
 
-    <!-- DESTEK -->
-    <div id="supportPage" class="hidden">
-        <h3>Destek Talebi</h3>
-        <textarea id="supportMsg" rows="3" placeholder="Sorunuzu yazın..."></textarea>
-        <button class="btn btn-admin" onclick="sendSupport()">Gönder</button>
-        <button class="btn btn-back" onclick="navigateTo('studentDashboard')">← Dön</button>
+        <!-- YETKİLİ GİRİŞ -->
+        <div id="adminLoginPage" class="hidden">
+            <h2>Yetkili Paneli</h2>
+            <input type="password" id="adminPwd" placeholder="Admin Şifresi">
+            <button class="btn btn-admin" onclick="adminLogin()">Sisteme Gir</button>
+            <button class="btn btn-back" onclick="navigateTo('mainMenu')">← Geri</button>
+        </div>
+
+        <!-- YETKİLİ PANELİ -->
+        <div id="adminPanel" class="hidden">
+            <h2>Sistem Yönetimi</h2>
+            <div class="card"><b>📢 Duyuru</b><div id="adminAnnounceShow"></div><button class="small-btn" onclick="deleteAnnounce()">Duyuruyu Kaldır</button></div>
+            <div class="card"><b>⏳ Bekleyen Öğretmenler</b><div id="pendingTeachersList"></div></div>
+            <div class="card"><b>✅ Onaylı Öğretmenler</b><div id="approvedTeachersList"></div></div>
+            <div class="card"><b>👥 Bekleyen Öğrenciler</b><div id="pendingStudentsList"></div></div>
+            <div class="card"><b>✅ Onaylı Öğrenciler</b><div id="approvedStudentsList"></div></div>
+            <div class="card"><b>🌍 Genel Sohbet</b><button class="btn-danger" style="width:100%; margin-bottom:10px;" onclick="deleteAllMessages('genel_sohbet')">🗑️ Genel Sohbeti Sil</button><div id="adminGeneralChat" style="max-height:200px; overflow:auto;"></div></div>
+            <div class="card"><b>🏫 Sınıf Sohbetleri</b><div id="adminClassChats"></div></div>
+            <div class="card"><b>📩 Destek Talepleri</b><div id="supportTicketsList"></div></div>
+            <button class="btn btn-logout" onclick="logoutAdmin()">Çıkış</button>
+        </div>
+
+        <!-- ÖĞRENCİ KAYIT -->
+        <div id="studentRegisterPage" class="hidden">
+            <h2>Öğrenci Kaydı</h2>
+            <input type="text" id="stdRegName" placeholder="Ad Soyad">
+            <select id="stdRegClass">
+                <option value="5A">5A</option><option value="5B">5B</option>
+                <option value="6A">6A</option><option value="6B">6B</option><option value="6C">6C</option><option value="6D">6D</option>
+                <option value="7A">7A</option><option value="7B">7B</option>
+                <option value="8A">8A</option><option value="8B">8B</option>
+            </select>
+            <input type="password" id="stdRegPass" placeholder="Şifre">
+            <button class="btn btn-student" onclick="studentRegister()">Onay İsteği Gönder</button>
+            <button class="btn btn-back" onclick="navigateTo('mainMenu')">← Geri</button>
+        </div>
+
+        <!-- DESTEK -->
+        <div id="supportPage" class="hidden">
+            <h3>Destek Talebi</h3>
+            <textarea id="supportMsg" rows="3" placeholder="Sorunuzu yazın..."></textarea>
+            <button class="btn btn-admin" onclick="sendSupport()">Gönder</button>
+            <button class="btn btn-back" onclick="navigateTo('studentDashboard')">← Dön</button>
+        </div>
     </div>
-</div>
 
 <script>
     const firebaseConfig = {
@@ -381,7 +387,7 @@
         });
     }
 
-    // ========== YETKİLİ (Öğretmenler Odası YOK) ==========
+    // ========== YETKİLİ ==========
     window.adminLogin=function(){
         let sifre=""; sifre+=String.fromCharCode(214,72,71,54,49,51,55,50,53);
         if(document.getElementById('adminPwd').value===sifre) navigateTo('adminPanel');
